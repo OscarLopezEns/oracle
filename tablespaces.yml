@@ -1,0 +1,17 @@
+# Test playbook
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    # connection
+    #oracle_home: /opt/oracle/instantclient_12_2
+    #hostname: 192.168.1.71
+    #service_name: db12c.el5.localdomain
+    #user: test
+    #password: test
+    #threshold_free_pct: 10
+
+  roles:
+    - { role: oracle_ansible }

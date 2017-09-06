@@ -13,12 +13,3 @@
     path: /etc/opt/csw/ansible/playbooks
     state: directory
     mode: 0755
-
-# Copy playbooks and libraries
-- copy:
-    src: "{{ role_path }}/files/{{ item.src }}"
-    dest: "/etc/opt/csw/ansible/playbooks/"
-  with_items:
-    - { src: "library", dest: "library" }
-    - { src: "test.yml", dest: "test.yml" }
-    - { src: "simple_select_script.sql", dest: "simple_select_script.sql" }

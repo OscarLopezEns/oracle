@@ -1,0 +1,20 @@
+---
+- name: List tablespaces with less than "{{ threshold_free_pct }} %" of free space
+  oracle_sql: hostname={{ hostname }} service_name={{ service_name }} user={{ user }} password={{ password }} sql="{{ sql_list_tablespaces_less_pct }}"
+  environment: "{{ oracle_env }}"
+  register: result
+
+- debug:
+    msg: "Table space having less than 10 % of free space: {{ item.0 }}"
+  with_items:
+    - "{{ result.msg }}"
+
+- name: List all tablespaces utilization
+  oracle_sql: hostname={{ hostname }} service_name={{ service_name }} user={{ user }} password={{ password }} sql="{{ sql_list_all_tablespaces_utilization }}"
+  environment: "{{ oracle_env }}"
+  register: result
+
+- debug:
+    msg: "Tablespace analyzed: {{ item.0 }}"
+  with_items:
+    - "{{ result.msg }}"

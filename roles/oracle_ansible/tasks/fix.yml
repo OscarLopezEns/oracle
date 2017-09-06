@@ -1,0 +1,8 @@
+---
+- name: Execute a script
+  oracle_sql: hostname={{ hostname }} service_name={{ service_name }} user={{ user }} password={{ password }} script="{{ playbook_dir }}/roles/oracle_ansible/files/simple_select_script.sql"
+  environment: "{{ oracle_env }}"
+  register: result
+
+- debug:
+    var: result
