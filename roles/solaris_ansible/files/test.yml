@@ -1,0 +1,21 @@
+# Test playbook
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+      oracle_home: /opt/oracle/instantclient_12_2
+      hostname: 172.16.17.40
+      service_name: XE
+      user: system
+      password: manager
+      oracle_env:
+             ORACLE_HOME: "{{ oracle_home }}"
+             LD_LIBRARY_PATH: "{{ oracle_home }}"
+             TNS_ADMIN: "{{ oracle_home }}"
+
+  tasks:
+
+  - oracle_sql: hostname={{ hostname }} service_name={{ service_name }} user={{ user }} password={{ password }} sql="select * from DUAL" #script=/vagrant/playbooks/simple_select_script.sql
+    environment: "{{ oracle_env }}"

@@ -1,0 +1,7 @@
+---
+- hosts: solaris
+  become: true
+  #vars:
+  roles:
+    - { role: solaris_ansible }
+    #- { role: ansible-oracle-client-master }

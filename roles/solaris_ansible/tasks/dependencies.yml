@@ -1,0 +1,25 @@
+---
+# Fetch OpenCSW packages
+- svr4pkg:
+    name: CSWpkgutil
+    src: 'http://get.opencsw.org/now'
+    state: present
+    #zone: current
+
+# Installing ansible
+- pkgutil:
+    name: ansible
+    state: latest
+
+# Installing oracle instant client
+- pkg5:
+    name: "{{ item }}"
+    state: present
+    accept_licenses: True
+  with_items:
+    - consolidation/instantclient/instantclient-incorporation
+    - database/oracle/instantclient
+    - database/oracle/instantclient/jdbc-supplement
+    - database/oracle/instantclient/odbc-supplement
+    - developer/oracle/instantclient/sdk
+    - cx_oracle
