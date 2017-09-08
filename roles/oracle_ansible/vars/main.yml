@@ -5,25 +5,15 @@ oracle_env:
        LD_LIBRARY_PATH: "{{ oracle_home }}"
        TNS_ADMIN: "{{ oracle_home }}"
 
-# queries
-sql_list_tablespaces_less_pct: "select df.tablespace_name \"Tablespace\",
- totalusedspace \"Used MB\",
- (df.totalspace - tu.totalusedspace) \"Free MB\",
- df.totalspace \"Total MB\",
- round(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace)) \"Pct. Free\"
-from (select tablespace_name,
-         round(sum(bytes) / 1048576) TotalSpace
-    from dba_data_files
-   group by tablespace_name) df,
- (select round(sum(bytes)/(1024*1024)) totalusedspace,
-         tablespace_name
-    from dba_segments
-   group by tablespace_name) tu
-where df.tablespace_name = tu.tablespace_name
-and df.totalspace <> 0
-and round(100 * ( (df.totalspace - tu.totalusedspace)/ df.totalspace)) <= {{ threshold_free_pct }};" # Less than X % of free space
+sql_list_small_tbs_critical: "select * from ({{ sql_list_all_tbs }})
+where total < {{ tbs_size_threshold }} and
+      used >= {{ small_tbs_usage_alrt_threshold }};"
 
-sql_list_all_tablespaces_utilization: "select tbs, sum(total) total, sum(free) free, max(maximum) maximum, trunc(((sum(total)-sum(free))/decode(sum(total),0,1,sum(total)))*100,2) used
+sql_list_big_tbs_critical: "select * from ({{ sql_list_all_tbs }})
+where total >= {{ tbs_size_threshold }} and
+      used >= {{ big_tbs_usage_alrt_threshold }};"
+
+sql_list_all_tbs: "select tbs, sum(total) total, sum(free) free, max(maximum) maximum, trunc(((sum(total)-sum(free))/decode(sum(total),0,1,sum(total)))*100,2) used
 from (select tablespace_name tbs, sum(bytes)/1024/1024  total, 0 free, 0 maximum
         from dba_data_files
         where tablespace_name not like '%TEMP%'
@@ -50,4 +40,4 @@ from (select tablespace_name tbs, sum(bytes)/1024/1024  total, 0 free, 0 maximum
                                       'VISION_MD_2007_U32M_ARC','MINERVA_DATA_DYNAMIC_01','TRDM_2010_D_16K_U32M','TRDM_DATA_2007')
         group by tablespace_name)
 group by tbs
-order by 2 desc;"
+order by 2 desc"

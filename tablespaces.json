@@ -1,8 +1,10 @@
 {
   "oracle_home": "/opt/oracle/instantclient_12_2",
-  "hostname": "192.168.1.71",
+  "hostname": "172.16.17.66",
   "service_name": "db12c.el5.localdomain",
   "user": "test",
   "password": "test",
-  "threshold_free_pct": 10
+  "tbs_size_threshold": 40960,
+  "small_tbs_usage_alrt_threshold": 95,
+  "big_tbs_usage_alrt_threshold": 98
 }
