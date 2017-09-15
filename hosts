@@ -1,0 +1,2 @@
+[solaris]
+localhost ansible_port=2200 ansible_user=vagrant become_user=root

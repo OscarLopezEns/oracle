@@ -9,7 +9,7 @@
   with_items:
     - "{{ result.msg }}"
 
-- name: Find big tablespaces (>= 40 GB) i Critical alert status
+- name: Find big tablespaces (>= 40 GB) in Critical alert status
   oracle_sql: hostname={{ hostname }} service_name={{ service_name }} user={{ user }} password={{ password }} sql="{{ sql_list_big_tbs_critical }}"
   environment: "{{ oracle_env }}"
   register: result
